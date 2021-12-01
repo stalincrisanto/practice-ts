@@ -13,13 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const usuario_1 = __importDefault(require("../routes/usuario"));
+const members_1 = __importDefault(require("../routes/members"));
+const facilities_1 = __importDefault(require("../routes/facilities"));
+const bookings_1 = __importDefault(require("../routes/bookings"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
 class Server {
     constructor() {
         this.apiPaths = {
-            usuarios: '/api/usuarios'
+            members: '/members',
+            facilities: '/facilities',
+            bookings: '/bookings'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
@@ -48,7 +52,9 @@ class Server {
         //Carpeta pública
     }
     routes() {
-        this.app.use(this.apiPaths.usuarios, usuario_1.default);
+        this.app.use(this.apiPaths.members, members_1.default);
+        this.app.use(this.apiPaths.facilities, facilities_1.default);
+        this.app.use(this.apiPaths.bookings, bookings_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

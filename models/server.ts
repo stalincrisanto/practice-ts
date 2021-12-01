@@ -1,5 +1,7 @@
 import express, {Application} from 'express';
-import userRoutes from '../routes/usuario';
+import memberRoutes from '../routes/members';
+import facilitiesRoutes from '../routes/facilities';
+import bookingsRoutes from '../routes/bookings';
 import cors from 'cors';
 import db from '../db/connection';
 
@@ -7,7 +9,9 @@ class Server {
     private app: Application;
     private port: string;
     private apiPaths = {
-        usuarios: '/api/usuarios'
+        members: '/members',
+        facilities: '/facilities',
+        bookings: '/bookings'
     }
 
     constructor(){
@@ -19,7 +23,7 @@ class Server {
         //Definir rutas
         this.routes();
     }
-
+    
     async dbConnection(){
         try {
             await db.authenticate();
@@ -29,7 +33,7 @@ class Server {
             //console.log(error);
         }
     }
-
+    
     middlewares(){
         //CORS
         this.app.use(cors());
@@ -39,9 +43,11 @@ class Server {
 
         //Carpeta pública
     }
-
+    
     routes(){
-        this.app.use(this.apiPaths.usuarios, userRoutes);
+        this.app.use(this.apiPaths.members, memberRoutes);
+        this.app.use(this.apiPaths.facilities, facilitiesRoutes);
+        this.app.use(this.apiPaths.bookings, bookingsRoutes);
     }
 
     listen(){
